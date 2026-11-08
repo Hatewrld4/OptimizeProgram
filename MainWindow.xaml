@@ -1,0 +1,81 @@
+<Window x:Class="OptimizeProgram.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Optimize Program" Width="920" Height="680" MinWidth="700" MinHeight="500"
+        Background="#12121A" Foreground="#EDEDF5" FontFamily="Segoe UI"
+        WindowStartupLocation="CenterScreen">
+  <Window.Resources>
+    <Style x:Key="Btn" TargetType="Button">
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="Background" Value="#6C5CE7"/>
+      <Setter Property="Padding" Value="18,10"/>
+      <Setter Property="Margin" Value="0,0,10,0"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+              <ContentPresenter HorizontalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="b" Property="Opacity" Value="0.85"/></Trigger>
+              <Trigger Property="IsEnabled" Value="False"><Setter TargetName="b" Property="Opacity" Value="0.4"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Resources>
+  <Grid Margin="24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <StackPanel Margin="0,0,0,10">
+      <TextBlock Text="Optimize Program" FontSize="28" FontWeight="Bold"/>
+      <TextBlock Text="Отметь нужные твики. Каждое изменение сохраняется в бэкап и откатывается кнопкой." Foreground="#8E8EA8" Margin="0,4,0,0"/>
+    </StackPanel>
+    <ListBox x:Name="List" Grid.Row="1" Background="Transparent" BorderThickness="0"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+      <ListBox.GroupStyle>
+        <GroupStyle>
+          <GroupStyle.HeaderTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Name}" Foreground="#A29BFE" FontSize="15" FontWeight="SemiBold" Margin="0,14,0,6"/>
+            </DataTemplate>
+          </GroupStyle.HeaderTemplate>
+        </GroupStyle>
+      </ListBox.GroupStyle>
+      <ListBox.ItemContainerStyle>
+        <Style TargetType="ListBoxItem">
+          <Setter Property="Focusable" Value="False"/>
+          <Setter Property="Template">
+            <Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value>
+          </Setter>
+        </Style>
+      </ListBox.ItemContainerStyle>
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Border Background="#1C1C28" CornerRadius="10" Padding="14,10" Margin="0,0,8,6">
+            <Grid>
+              <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+              <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}" Foreground="#EDEDF5">
+                <StackPanel Margin="8,0,0,0">
+                  <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                  <TextBlock Text="{Binding Description}" Foreground="#8E8EA8" FontSize="12" TextWrapping="Wrap"/>
+                </StackPanel>
+              </CheckBox>
+              <TextBlock Grid.Column="1" Text="{Binding StatusText}" Foreground="#55EFC4" VerticalAlignment="Center" Margin="12,0,0,0"/>
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,14,0,0">
+      <Button Style="{StaticResource Btn}" Content="Создать бэкап" Click="Backup_Click" Background="#2D3436"/>
+      <Button Style="{StaticResource Btn}" Content="Применить выбранные" Click="Apply_Click"/>
+      <Button Style="{StaticResource Btn}" Content="Откатить выбранные" Click="Revert_Click" Background="#D63031"/>
+      <Button Style="{StaticResource Btn}" Content="Очистить временные файлы" Click="Clean_Click" Background="#00B894"/>
+    </StackPanel>
+    <TextBlock x:Name="Status" Grid.Row="3" Foreground="#8E8EA8" Margin="0,10,0,0" TextWrapping="Wrap"/>
+  </Grid>
+</Window>
